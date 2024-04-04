@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "CoderHub Assist",
+    "version": "1.0",
+    "description": "extracting test cases from the problems for easy debugging",
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts" : [{
+      "matches" : ["https://coderhub.sa/challenges/*"],
+      "js" : ["script.js"] 
+      }],
+    "host_permissions": [
+        "https://coderhub.sa/*"
+      ],
+    "permissions": ["activeTab", "tabs","scripting"]
+  }
