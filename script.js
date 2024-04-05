@@ -2,43 +2,13 @@ function formatCodeForHTML(code) {
     return code.replace(/\n/g, '<br>');
 }
 
-function programmingLanguage(fileExtension) {
-    fileExtension = '.' + fileExtension.toLowerCase();
-    switch (fileExtension) {
-        case '.py':
-            return 'Python';
-        case '.java':
-            return 'Java';
-        case '.cpp':
-            return 'C++';
-        case '.cs':
-            return 'C#';
-        case '.swift':
-            return 'Swift';
-        case '.kt':
-            return 'Kotlin';
-        case '.js':
-            return 'Javascript';
-        case '.php':
-            return 'PHP';
-        case '.dart':
-            return 'Dart';
-        default:
-            return 'Unknown Language';
-    }
-}
+
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.action === "updateCode") {
         const codeParagraph = document.querySelector('.code');
         if (codeParagraph) {
             codeParagraph.innerHTML = formatCodeForHTML(message.code);
-        }
-    }
-    if (message.action === "updateLanguage") {
-        const languageParagraph = document.querySelector('.language');
-        if (languageParagraph) {
-            languageParagraph.innerHTML = programmingLanguage(message.code);
         }
     }
 });
@@ -101,9 +71,6 @@ function doTheMagic() {
 
     const codeText = document.querySelector('.monaco-mouse-cursor-text').innerText;
     const functionName = codeText.split('def')[1].split('(')[0].trim();
-    const xpath = "/html/body/div[1]/main/div/div[2]/div/div[1]/div[2]/div[2]/div";
-    const fileExtension = document.evaluate(xpath, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-
 
     let wholeCode = codeText + '\n\n\n\n';
     function generatePythonCode(testCases) {
@@ -128,7 +95,6 @@ function doTheMagic() {
 
     try {
         chrome.runtime.sendMessage({ action: "updateCode", code: wholeCode });
-        chrome.runtime.sendMessage({ action: "updateLanguage", code: fileExtension.innerText.split('.')[1] });
     }
     catch (e) {
         alert(e)
